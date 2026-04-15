@@ -1,0 +1,16 @@
+name: OGSiD® SSO
+
+services:
+  ogsid-sso-db:
+    image: "postgres:18.3"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: default
+    ports:
+      - 5432:5432
+    volumes:
+      - ogsid-sso:/var/lib/postgresql
+
+volumes:
+  ogsid-sso:
