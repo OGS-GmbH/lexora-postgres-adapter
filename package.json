@@ -1,6 +1,6 @@
 {
   "name": "@ogs-gmbh/lexora-postgres-adapter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "High-performance PostgreSQL adapter for Lexora - Seamlessly manage multi-language translations with enterprise-grade database storage, scoped namespaces, and flexible queries",
   "keywords": [
     "database",
