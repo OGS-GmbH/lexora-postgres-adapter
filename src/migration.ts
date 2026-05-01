@@ -19,8 +19,8 @@ async function migrate(sql: PostgresSql) {
   await sql`
     CREATE TABLE IF NOT EXISTS translatables (
       id bigserial NOT NULL PRIMARY KEY,
-      token text NOT NULL UNIQUE,
-      value text NOT NULL UNIQUE,
+      token text NOT NULL,
+      value text NOT NULL,
       scope_id bigint,
       locale_id bigint NOT NULL,
       CONSTRAINT unique_translatable UNIQUE (token, scope_id, locale_id),

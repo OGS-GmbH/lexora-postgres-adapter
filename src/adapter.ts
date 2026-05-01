@@ -1,13 +1,15 @@
 import {
   type AdapterOperationFnArgs,
   type AsyncAdapterFnReturn,
+  type AsyncAdapterLangsFnReturn,
   type AsyncAdapterOperationFnReturn,
-  type Translatables
+  type ScopedTranslationsByToken
 } from "@ogs-gmbh/lexora";
 import postgres from "postgres";
 import { migrate } from "./migration.js";
 import type {
   ExtendedPostgresAdapterOptions,
+  LocaleQueryResult,
   TranslatableQueryResult,
   TranslatableQueryResultWithScopeName
 } from "./types.js";
@@ -73,9 +75,11 @@ async function postgresAdapter<T extends Record<string, postgres.PostgresType>>(
   }
 
   return {
-    get: async (operationArgs: AdapterOperationFnArgs): AsyncAdapterOperationFnReturn => {
-      if (resolvedOptions?.getStatement !== undefined)
-        return await resolvedOptions.getStatement(sql);
+    getTranslatables: async (
+      operationArgs: AdapterOperationFnArgs
+    ): AsyncAdapterOperationFnReturn => {
+      if (resolvedOptions?.getTranslatablesStatement !== undefined)
+        return await resolvedOptions.getTranslatablesStatement(sql);
 
       const result = await sql<
         typeof operationArgs.scopes extends undefined
@@ -86,32 +90,33 @@ async function postgresAdapter<T extends Record<string, postgres.PostgresType>>(
         FROM translatables
         RIGHT JOIN locales
         ON translatables.locale_id = locales.id
-        ${
-          operationArgs.scopes
-            ? sql`
-              RIGHT JOIN scopes
-              ON translatables.scope_id = scopes.id
-            `
-            : sql``
-        }
-        WHERE locales.code = ${operationArgs.locale}
-        ${operationArgs.scopes ? sql`AND scopes.name = ANY(${operationArgs.scopes})` : sql``}
+        RIGHT JOIN scopes
+        ON translatables.scope_id = scopes.id
+        WHERE locales.code = ${operationArgs.lang}
+        AND scopes.name = ANY(${operationArgs.scopes})
       `;
 
-      if (operationArgs.scopes === undefined)
-        return Object.fromEntries(result.map(({ token, value }) => [token, value]));
-
-      const translatables: Translatables = {};
+      const translatables: ScopedTranslationsByToken = {};
 
       for (const resultItem of result) {
         translatables[resultItem.scope_name] = {
-          // @ts-expect-error
           ...translatables[resultItem.scope_name],
           [resultItem.token]: resultItem.value
         };
       }
 
       return translatables;
+    },
+    getLangs: async (): AsyncAdapterLangsFnReturn => {
+      if (resolvedOptions?.getLangsStatement !== undefined)
+        return await resolvedOptions.getLangsStatement(sql);
+
+      const result = await sql<LocaleQueryResult>`
+        SELECT locales.name, locales.code
+        FROM locales
+      `;
+
+      return result;
     }
   };
 }

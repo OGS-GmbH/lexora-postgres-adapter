@@ -1,4 +1,4 @@
-import type { Translatables } from "@ogs-gmbh/lexora";
+import type { Lang, ScopedTranslationsByToken } from "@ogs-gmbh/lexora";
 import type postgres from "postgres";
 
 /**
@@ -35,7 +35,8 @@ type PostgresAdapterOptions = Partial<{
    * @since 1.0.0
    * @author Simon Kovtyk
    */
-  getStatement: (sql: PostgresSql) => MaybePromise<Translatables>;
+  getTranslatablesStatement: (sql: PostgresSql) => MaybePromise<ScopedTranslationsByToken>;
+  getLangsStatement: (sql: PostgresSql) => MaybePromise<Lang[]>;
   /**
    * Callback, that enables to override the auto migration statement
    * @param sql - sql fn from `postgres.js`
@@ -125,6 +126,8 @@ type TranslatableQueryResultWithScopeName = TranslatableQueryResult & {
   scope_name: string;
 };
 
+type LocaleQueryResult = Omit<LocaleModel, "id">[];
+
 export type {
   MaybePromise,
   PostgresSql,
@@ -133,6 +136,7 @@ export type {
   TranslatableModel,
   TranslatableQueryResult,
   TranslatableQueryResultWithScopeName,
+  LocaleQueryResult,
   ScopeModel,
   LocaleModel
 };

@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@ogs-gmbh/lexora':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^2.0.0
+        version: 2.0.0
       postgres:
         specifier: ^3.4.9
         version: 3.4.9
@@ -691,8 +691,8 @@ packages:
       '@emnapi/core': ^1.7.1
       '@emnapi/runtime': ^1.7.1
 
-  '@ogs-gmbh/lexora@1.0.0':
-    resolution: {integrity: sha512-Bdrn0PPVYHBMEoszqkX5O/uNXXKoi0zr1taDeSNiBLflXSUCPhocaraSwvDES69Dsc4rKDp2TSn+khHNgJ7Q2A==}
+  '@ogs-gmbh/lexora@2.0.0':
+    resolution: {integrity: sha512-BZKFj6axbkQXvRElJ46DgOgUOiKdW7HD5zKbKSK7CcNafmfTQ9I7S8sSrtN6zqdHv54mNghA7wKzEQ7YP+2xmg==}
 
   '@ogs-gmbh/ogsid-11-theme@1.0.0':
     resolution: {integrity: sha512-8ZXrAy2HO36f50xfQds0EOLJAlknbn7HfkGMRZKZqK/xDKcZP/V8j+GAt98t93RqvaiDX97p+UTlobK0xNwcbQ==}
@@ -3467,7 +3467,7 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
-  '@ogs-gmbh/lexora@1.0.0':
+  '@ogs-gmbh/lexora@2.0.0':
     dependencies:
       react: 19.2.4
 
