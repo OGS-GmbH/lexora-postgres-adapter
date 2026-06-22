@@ -1,8 +1,9 @@
 import {
-  type AdapterOperationFnArgs,
+  type AdapterTranslationsFnArgs,
+  type AsyncAdapterDefaultLangFnReturn,
   type AsyncAdapterFnReturn,
   type AsyncAdapterLangsFnReturn,
-  type AsyncAdapterOperationFnReturn,
+  type AsyncAdapterTranslationsFnReturn,
   type ScopedTranslationsByToken
 } from "@ogs-gmbh/lexora";
 import postgres from "postgres";
@@ -75,9 +76,9 @@ async function postgresAdapter<T extends Record<string, postgres.PostgresType>>(
   }
 
   return {
-    getTranslatables: async (
-      operationArgs: AdapterOperationFnArgs
-    ): AsyncAdapterOperationFnReturn => {
+    getTranslations: async (
+      operationArgs: AdapterTranslationsFnArgs
+    ): AsyncAdapterTranslationsFnReturn => {
       if (resolvedOptions?.getTranslatablesStatement !== undefined)
         return await resolvedOptions.getTranslatablesStatement(sql);
 
@@ -86,12 +87,12 @@ async function postgresAdapter<T extends Record<string, postgres.PostgresType>>(
           ? TranslatableQueryResult[]
           : TranslatableQueryResultWithScopeName[]
       >`
-        SELECT translatables.* ${operationArgs.scopes ? sql`, scopes.name as scope_name` : sql``}
-        FROM translatables
+        SELECT translations.* ${operationArgs.scopes ? sql`, scopes.name as scope_name` : sql``}
+        FROM translations
         RIGHT JOIN locales
-        ON translatables.locale_id = locales.id
+        ON translations.locale_id = locales.id
         RIGHT JOIN scopes
-        ON translatables.scope_id = scopes.id
+        ON translations.scope_id = scopes.id
         WHERE locales.code = ${operationArgs.lang}
         AND scopes.name = ANY(${operationArgs.scopes})
       `;
@@ -111,12 +112,24 @@ async function postgresAdapter<T extends Record<string, postgres.PostgresType>>(
       if (resolvedOptions?.getLangsStatement !== undefined)
         return await resolvedOptions.getLangsStatement(sql);
 
-      const result = await sql<LocaleQueryResult>`
-        SELECT locales.name, locales.code
+      const result = await sql<LocaleQueryResult[]>`
+        SELECT locales.name, locales.code, locales.is_default
         FROM locales
       `;
 
       return result;
+    },
+    getDefaultLang: async (): AsyncAdapterDefaultLangFnReturn => {
+      if (resolvedOptions?.getDefaultLangStatement !== undefined)
+        return await resolvedOptions.getDefaultLangStatement(sql);
+
+      const result = await sql<LocaleQueryResult[]>`
+        SELECT locales.name, locales.code, locales.is_default AS "default"
+        FROM locales
+        WHERE locales.is_default = true
+      `;
+
+      return result.at(0)!;
     }
   };
 }
