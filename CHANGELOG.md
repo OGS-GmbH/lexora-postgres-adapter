@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/OGS-GmbH/lexora-postgres-adapter/compare/v1.1.0...v1.2.0) (2026-06-24)
+
+
+### Features
+
+* add default locale api ([b6f8346](https://github.com/OGS-GmbH/lexora-postgres-adapter/commit/b6f83467818f68531959752e98315dccf455d2fc))
+
 ## [1.1.0](https://github.com/OGS-GmbH/lexora-postgres-adapter/compare/v1.0.0...v1.1.0) (2026-05-01)
 
 
