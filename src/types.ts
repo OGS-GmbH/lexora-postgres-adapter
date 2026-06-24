@@ -46,6 +46,7 @@ type PostgresAdapterOptions = Partial<{
    * @author Simon Kovtyk
    */
   migrationStatement: (sql: PostgresSql) => MaybePromise<void>;
+  getDefaultLangStatement: (sql: PostgresSql) => MaybePromise<Lang>;
   /**
    * Flag to enable or disable automatic database migrations
    * @default `false`
@@ -104,6 +105,7 @@ type LocaleModel = {
   id: number;
   name: string;
   code: string;
+  default: boolean;
 };
 
 /**
@@ -126,7 +128,7 @@ type TranslatableQueryResultWithScopeName = TranslatableQueryResult & {
   scope_name: string;
 };
 
-type LocaleQueryResult = Omit<LocaleModel, "id">[];
+type LocaleQueryResult = Omit<LocaleModel, "id">;
 
 export type {
   MaybePromise,
@@ -136,7 +138,7 @@ export type {
   TranslatableModel,
   TranslatableQueryResult,
   TranslatableQueryResultWithScopeName,
-  LocaleQueryResult,
   ScopeModel,
-  LocaleModel
+  LocaleModel,
+  LocaleQueryResult
 };
