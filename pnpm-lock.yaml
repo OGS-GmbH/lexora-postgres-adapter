@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@ogs-gmbh/lexora':
-        specifier: file:/home/simonkov/Projects/ogs/github/lexora/dist/main
-        version: file:../lexora/dist/main
+        specifier: ^2.2.0
+        version: 2.2.0
       postgres:
         specifier: ^3.4.9
         version: 3.4.9
@@ -713,8 +713,8 @@ packages:
       '@emnapi/core': ^1.7.1
       '@emnapi/runtime': ^1.7.1
 
-  '@ogs-gmbh/lexora@file:../lexora/dist/main':
-    resolution: {directory: ../lexora/dist/main, type: directory}
+  '@ogs-gmbh/lexora@2.2.0':
+    resolution: {integrity: sha512-yEeKkUqz4Gk/pYQH00OPeHJwCdJzDESXpa6QrmXRIrt2He20sAKKMvaMXJmfc6+MY29FR23lN7UcoT8mFZ4FGA==}
 
   '@ogs-gmbh/ogsid-11-theme@1.0.0':
     resolution: {integrity: sha512-8ZXrAy2HO36f50xfQds0EOLJAlknbn7HfkGMRZKZqK/xDKcZP/V8j+GAt98t93RqvaiDX97p+UTlobK0xNwcbQ==}
@@ -3739,7 +3739,7 @@ snapshots:
       '@tybys/wasm-util': 0.10.2
     optional: true
 
-  '@ogs-gmbh/lexora@file:../lexora/dist/main':
+  '@ogs-gmbh/lexora@2.2.0':
     dependencies:
       react: 19.2.7
 
